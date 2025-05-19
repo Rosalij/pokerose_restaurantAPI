@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 //mongodb drinks schema
 //this schema is used for images in gallery
-const gallerySchema = new mongoose.Schema({
+const imageSchema = new mongoose.Schema({
     imageurl: {
         type: String,
         required: true,
@@ -16,5 +16,5 @@ const gallerySchema = new mongoose.Schema({
     },
 
 });
-const gallery = mongoose.model("gallery", gallerySchema);
-module.exports = gallery
+const Image = mongoose.model("Image", imageSchema);
+module.exports = Image

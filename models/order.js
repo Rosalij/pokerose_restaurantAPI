@@ -14,11 +14,11 @@ const orderSchema = new mongoose.Schema({
     },
 
     food: {
-        type: string,
+        type: String,
     },
 
     drink: {
-        type: string,
+        type: String,
     },
 
     created: {

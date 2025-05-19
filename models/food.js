@@ -25,8 +25,6 @@ const foodSchema = new mongoose.Schema({
         default: Date.now()
     }
 
-
-
 });
 const Food = mongoose.model("Food", foodSchema);
 module.exports = Food
