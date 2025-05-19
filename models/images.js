@@ -10,8 +10,8 @@ const imageSchema = new mongoose.Schema({
     },
 
 
-    desrciption: {
-        type: Number,
+    description: {
+        type: String,
         required: true
     },
 

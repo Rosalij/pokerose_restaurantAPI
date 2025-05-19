@@ -96,7 +96,7 @@ router.post('/register', async (req, res) => {
 router.get('/food', async (req, res) => {
     try {
         const food = await Food.find();
-        res.status(200).json(food + "it works");
+        res.status(200).json(food);
 
     }
     catch (error) {
@@ -123,9 +123,6 @@ router.post('/food', authenticateToken, async (req, res) => {
             price: price,
         });
 
-
-        console.log("req.newfood:", req.newFood);
-
         //save post to database
         await newFood.save();
         res.status(201).json({ message: "Food item created successfully" });
@@ -134,5 +131,72 @@ router.post('/food', authenticateToken, async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+
+
+router.get('/drink', async (req, res) => {
+    try {
+        const drink = await Drink.find();
+        res.status(200).json(drink);
+
+    }
+    catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+router.post('/drink', authenticateToken, async (req, res) => {
+    try {
+        //get data from request
+        const name = req.body.name;
+        const price = req.body.price;
+
+        //validate input
+        if (!name || !price) {
+            return res.status(400).json({ error: "You must fill in all fields" });
+        }
+
+        const newDrink = new Drink({
+            name: name,
+            price: price,
+        });
+
+
+        //save post to database
+        await newDrink.save();
+        res.status(201).json({ message: "Drink item created successfully" });
+    } catch (error) {
+        console.error("Error during drink item creation:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+
+router.post('/image', authenticateToken, async (req, res) => {
+    try {
+        //get data from request
+        const imageurl = req.body.imageurl;
+        const description = req.body.description;
+    
+
+        //validate input
+        if (!imageurl || !description ) {
+            return res.status(400).json({ error: "You must fill in all fields" });
+        }
+
+        const newImage = new Image({
+            imageurl: imageurl,
+            description: description
+        });
+
+        //save post to database
+        await newImage.save();
+        res.status(201).json({ message: "Image created successfully" });
+    } catch (error) {
+        console.error("Error during image creation:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+
 
 module.exports = router
