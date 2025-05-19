@@ -27,8 +27,9 @@ const Drink = require('../models/drink.js');
 const Order = require('../models/order.js');
 const Image = require('../models/images.js');
 const authenticateToken = require('../authToken.js');
-const upload = require('../multer.js'); // memory or disk multer
-const cloudinary = require('../cloudinary.js');
+
+//const upload = require('../multer.js'); // memory or disk multer
+//const cloudinary = require('../cloudinary.js');
 
 
 //login route
@@ -167,33 +168,6 @@ router.post('/drink', authenticateToken, async (req, res) => {
     }
 });
 
-//post new image to gallery
-router.post('/image', authenticateToken, async (req, res) => {
-    try {
-        //get data from request
-        const imageurl = req.body.imageurl;
-        const description = req.body.description;
-    
-
-        //validate input
-        if (!imageurl || !description ) {
-            return res.status(400).json({ error: "You must fill in all fields" });
-        }
-
-        const newImage = new Image({
-            imageurl: imageurl,
-            description: description
-        });
-
-        //save post to database
-        await newImage.save();
-        res.status(201).json({ message: "Image created successfully" });
-    } catch (error) {
-        console.error("Error during image creation:", error);
-        res.status(500).json({ error: "Server error" });
-    }
-});
-
 //rotue to add new image, using cloudinary and multer to upload and create URL
 router.post('/image', authenticateToken, upload.single('image'), async (req, res) => {
   try {
@@ -222,7 +196,6 @@ router.post('/image', authenticateToken, upload.single('image'), async (req, res
     res.status(500).json({ error: "Server error" });
   }
 });
-
 
 
 //get all orders
