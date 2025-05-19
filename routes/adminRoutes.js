@@ -27,6 +27,8 @@ const Drink = require('../models/drink.js');
 const Order = require('../models/order.js');
 const Image = require('../models/images.js');
 const authenticateToken = require('../authToken.js');
+const upload = require('../multer.js'); // memory or disk multer
+const cloudinary = require('../cloudinary.js');
 
 
 //login route
@@ -192,6 +194,37 @@ router.post('/image', authenticateToken, async (req, res) => {
     }
 });
 
+//rotue to add new image, using cloudinary and multer to upload and create URL
+router.post('/image', authenticateToken, upload.single('image'), async (req, res) => {
+  try {
+    const file = req.file;
+    const description = req.body.description;
+
+    if (!file || !description) {
+      return res.status(400).json({ error: "Image file and description are required" });
+    }
+//upload to cloudinary
+    const base64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+    const result = await cloudinary.uploader.upload(base64, {
+      folder: 'restaurant_gallery',
+    });
+
+    const newImage = new Image({
+      imageurl: result.secure_url,
+      description: description,
+    });
+
+    await newImage.save();
+    res.status(201).json({ message: "Image uploaded and saved", image: newImage });
+
+  } catch (error) {
+    console.error("Error uploading and saving image:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+
 //get all orders
 router.get('/order', authenticateToken, async (req, res) => {
     try {
@@ -264,7 +297,7 @@ router.delete('/drink/:_id', authenticateToken, async (req, res) => {
   try {
     const drink = await Drink.findByIdAndDelete(req.params._id);
 
-    if (!idrink) {
+    if (!drink) {
       return res.status(404).json({ message: 'drink not found' });
     }
 
