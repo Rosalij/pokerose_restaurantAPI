@@ -11,7 +11,7 @@ const foodSchema = new mongoose.Schema({
 
 
     price: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -24,8 +24,6 @@ const foodSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     }
-
-
 
 });
 const Food = mongoose.model("Food", foodSchema);
