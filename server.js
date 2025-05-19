@@ -34,12 +34,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //routes 
-/*app.use("/", foodRoutes);
-app.use("/", drinkRoutes);
-app.use("/", orderRoutes);
+//app.use("/", foodRoutes);
+//app.use("/", drinkRoutes);
+//app.use("/", orderRoutes);
 app.use("/", adminRoutes);
-app.use("/", galleryRoutes);
-*/
+//app.use("/", galleryRoutes);
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
