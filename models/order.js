@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    phone: {
+    phoneno: {
         type: String,
         required: true
     },
@@ -18,6 +18,10 @@ const orderSchema = new mongoose.Schema({
     },
 
     drink: {
+        type: String,
+    },
+
+    note: {
         type: String,
     },
 
