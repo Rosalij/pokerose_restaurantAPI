@@ -4,11 +4,10 @@
  * 
  */
 
-
+//requirements
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
 const foodRoutes = require('./routes/foodRoutes.js');
 const drinkRoutes = require('./routes/drinkRoutes.js');
 const adminRoutes = require('./routes/adminRoutes.js');
@@ -16,7 +15,6 @@ const orderRoutes = require('./routes/orderRoutes.js');
 const imageRoutes = require('./routes/imageRoutes.js');
 
 require('dotenv').config();
-
 
 
 const mongoose = require('mongoose');
@@ -40,7 +38,7 @@ app.use("/", orderRoutes);
 app.use("/", adminRoutes);
 app.use("/", imageRoutes);
 
-
+//listen to port
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
