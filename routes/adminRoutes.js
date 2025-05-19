@@ -28,8 +28,8 @@ const Order = require('../models/order.js');
 const Image = require('../models/images.js');
 const authenticateToken = require('../authToken.js');
 
-//const upload = require('../multer.js'); // memory or disk multer
-//const cloudinary = require('../cloudinary.js');
+const upload = require('../multer.js'); // memory or disk multer
+const cloudinary = require('../cloudinary.js');
 
 
 //login route
