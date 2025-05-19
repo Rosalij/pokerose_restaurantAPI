@@ -92,5 +92,47 @@ router.post('/register', async (req, res) => {
     }
 });
 
+//get all food
+router.get('/food', async (req, res) => {
+    try {
+        const food = await Food.find();
+        res.status(200).json(food + "it works");
+
+    }
+    catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+
+router.post('/food', authenticateToken, async (req, res) => {
+    try {
+        //get data from request
+        const name = req.body.name;
+        const description = req.body.description;
+        const price = req.body.price;
+
+        //validate input
+        if (!name || !description || !price) {
+            return res.status(400).json({ error: "You must fill in all fields" });
+        }
+
+        const newFood = new Food({
+            name: name,
+            description: description,
+            price: price,
+        });
+
+
+        console.log("req.newfood:", req.newFood);
+
+        //save post to database
+        await newFood.save();
+        res.status(201).json({ message: "Food item created successfully" });
+    } catch (error) {
+        console.error("Error during food item creation:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
 
 module.exports = router
