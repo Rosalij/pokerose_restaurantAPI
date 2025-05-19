@@ -177,6 +177,11 @@ router.post('/image', authenticateToken, upload.single('image'), async (req, res
     if (!file || !description) {
       return res.status(400).json({ error: "Image file and description are required" });
     }
+//control maximum size of image upload
+    if (req.file.size > 5 * 1024 * 1024) {
+  return res.status(400).json({ error: "File too large. Max 5MB allowed." });
+}
+
 //upload to cloudinary
     const base64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
     const result = await cloudinary.uploader.upload(base64, {
