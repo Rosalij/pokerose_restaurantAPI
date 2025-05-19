@@ -29,17 +29,17 @@ How you can reach the API is described below:
 |GET    | /image     |get all images                                                 |
 |GET    | /food          |get food items                                                           |
 |GET    | /drink   | get all drinks                 |
-|GET    | /order   | get all orders                 |
+|GET    | /order   | get all orders (token required)                |
 |POST   | /login     |log in admin user, store json web token |
-|POST   | /register |store new admin user to database                           |
-|POST   | /food | store new food item                           |
-|POST   | /drink | store new drink item                           |
-|POST   | /image | store new image                            |
-|DELETE   | /image:_id | delete image with selected _ID                           |
-|DELETE   | /food:_id | delete food item with selected _ID                          |
-|DELETE   | /drink:_id | delete drink item with selected _ID                            |
-|DELETE   | /order:_id | delete order  with selected _ID                            |
-|PATCH   | /order:_id | update part of order with selected _ID                            |
-|PATCH   | /drink:_id | update part of order with selected _ID                            |
-|PATCH   | /food:_id | update part of order with selected _ID                            |
+|POST   | /register |store new admin user to database (token required)                           |
+|POST   | /food | store new food item (token required)                     |
+|POST   | /drink | store new drink item (token required)                           |
+|POST   | /image | store new image (token required)                           |
+|DELETE   | /image:_id | delete image with selected _ID (token required)                          |
+|DELETE   | /food:_id | delete food item with selected _ID (token required)                          |
+|DELETE   | /drink:_id | delete drink item with selected _ID (token required)                           |
+|DELETE   | /order:_id | delete order  with selected _ID (token required)                           |
+|PATCH   | /order:_id | update part of order with selected _ID (token required)                           |
+|PATCH   | /drink:_id | update part of order with selected _ID (token required)                           |
+|PATCH   | /food:_id | update part of order with selected _ID (token required)                           |
 
