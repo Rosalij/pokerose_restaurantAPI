@@ -7,7 +7,7 @@ The log in route creates a JSON Web Token which can be stored in local storage i
 The token also contains the admins username.
 
 ## Link
-a live version of the API is available at this url:(https://m4-jwlg.onrender.com/api)
+a live version of the API is available at this url:(https://pokerose-db.onrender.com/)
 
 ## Installation
 This API is using a MongoDB database with mongoose.
