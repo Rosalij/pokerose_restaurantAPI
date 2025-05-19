@@ -1,3 +1,21 @@
+
+/**
+ * Admin routes for:
+ * POST register
+ * POST login
+ * POST image
+ * POST drink
+ * POST food 
+ * PATCH food 
+ * PATCH drink 
+ * PATCH order 
+ * GET order
+ * DELETE order
+ * DELETE drink
+ * DELETE food
+ * DELETE image
+ */
+
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
@@ -48,7 +66,6 @@ router.post('/login', async (req, res) => {
             }
             res.status(200).json(response);
         }
-
         //if error
     } catch (error) {
         console.error("Error during login:", error);
@@ -92,19 +109,8 @@ router.post('/register', async (req, res) => {
     }
 });
 
-//get all food
-router.get('/food', async (req, res) => {
-    try {
-        const food = await Food.find();
-        res.status(200).json(food);
 
-    }
-    catch (error) {
-        res.status(500).json({ error: "Server error" });
-    }
-});
-
-
+//post new food item to menu
 router.post('/food', authenticateToken, async (req, res) => {
     try {
         //get data from request
@@ -133,17 +139,7 @@ router.post('/food', authenticateToken, async (req, res) => {
 });
 
 
-router.get('/drink', async (req, res) => {
-    try {
-        const drink = await Drink.find();
-        res.status(200).json(drink);
-
-    }
-    catch (error) {
-        res.status(500).json({ error: "Server error" });
-    }
-});
-
+//post new drink to menu
 router.post('/drink', authenticateToken, async (req, res) => {
     try {
         //get data from request
@@ -160,7 +156,6 @@ router.post('/drink', authenticateToken, async (req, res) => {
             price: price,
         });
 
-
         //save post to database
         await newDrink.save();
         res.status(201).json({ message: "Drink item created successfully" });
@@ -170,7 +165,7 @@ router.post('/drink', authenticateToken, async (req, res) => {
     }
 });
 
-
+//post new image to gallery
 router.post('/image', authenticateToken, async (req, res) => {
     try {
         //get data from request
@@ -197,11 +192,11 @@ router.post('/image', authenticateToken, async (req, res) => {
     }
 });
 
-//get all images
-router.get('/image', async (req, res) => {
+//get all orders
+router.get('/order', authenticateToken, async (req, res) => {
     try {
-        const image = await Image.find();
-        res.status(200).json(image);
+        const order = await Order.find();
+        res.status(200).json(order);
 
     }
     catch (error) {
@@ -209,38 +204,140 @@ router.get('/image', async (req, res) => {
     }
 });
 
+/*
+--DELETE ROUTES---
+ */
 
+//delete an order
+router.delete('/order/:_id', authenticateToken, async (req, res) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params._id);
 
-router.post('/order', async (req, res) => {
-    try {
-        //get data from request
-        const name = req.body.name;
-        const phoneno = req.body.phoneno;
-        const drink = req.body.drink;
-        const food = req.body.food;
-        const note = req.body.note;
-    
-
-        //validate input
-        if (!name || !phoneno ) {
-            return res.status(400).json({ error: "name and phone number required" });
-        }
-
-        const newOrder = new Order({
-            name: name,
-            phoneno: phoneno,
-            drink: drink,
-            food: food,
-            note: note,
-        });
-
-        //save post to database
-        await newOrder.save();
-        res.status(201).json({ message: "Order created successfully" });
-    } catch (error) {
-        console.error("Error during order creation:", error);
-        res.status(500).json({ error: "Server error" });
+    if (!order) {
+      return res.status(404).json({ message: 'order not found' });
     }
+
+    res.status(200).json({ message: 'order deleted', deletedOrder: order });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+//delete food item
+router.delete('/food/:_id', authenticateToken, async (req, res) => {
+  try {
+    const food = await Food.findByIdAndDelete(req.params._id);
+
+    if (!food) {
+      return res.status(404).json({ message: 'Food not found' });
+    }
+
+    res.status(200).json({ message: 'food deleted', deletedFood: food });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+//delete image from gallery
+router.delete('/image/:_id', authenticateToken, async (req, res) => {
+  try {
+    const image = await Image.findByIdAndDelete(req.params._id);
+
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+
+    res.status(200).json({ message: 'image deleted', deletedImage: image });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+//delete drink item
+router.delete('/drink/:_id', authenticateToken, async (req, res) => {
+  try {
+    const drink = await Drink.findByIdAndDelete(req.params._id);
+
+    if (!idrink) {
+      return res.status(404).json({ message: 'drink not found' });
+    }
+
+    res.status(200).json({ message: 'drink deleted', deletedDrink: drink });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+/*
+--UPDATE ROUTES---
+ */
+
+//PATCH update part of the food item
+router.patch('/food/:_id', authenticateToken, async (req, res) => {
+  try {
+    const updatedFood = await Food.findByIdAndUpdate(
+      req.params._id,
+      req.body,               
+      { new: true, runValidators: true } //return update & run schema validators
+    );
+
+    if (!updatedFood) {
+      return res.status(404).json({ message: 'Food item not found' });
+    }
+
+    res.json(updatedFood);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//PATCH update part of the drink item
+router.patch('/drink/:_id', authenticateToken, async (req, res) => {
+  try {
+    const updatedDrink = await Drink.findByIdAndUpdate(
+      req.params._id,
+      req.body,               
+      { new: true, runValidators: true } //return update & run schema validators
+    );
+
+    if (!updatedDrink) {
+      return res.status(404).json({ message: 'Drink item not found' });
+    }
+
+    res.json(updatedDrink);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//PATCH update part of the order
+router.patch('/order/:_id', authenticateToken, async (req, res) => {
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params._id,
+      req.body,               
+      { new: true, runValidators: true } //return update & run schema validators
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'order not found' });
+    }
+
+    res.json(updatedOrder);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 module.exports = router

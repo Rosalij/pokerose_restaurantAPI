@@ -34,11 +34,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //routes 
-//app.use("/", foodRoutes);
-//app.use("/", drinkRoutes);
-//app.use("/", orderRoutes);
+app.use("/", foodRoutes);
+app.use("/", drinkRoutes);
+app.use("/", orderRoutes);
 app.use("/", adminRoutes);
-//app.use("/", galleryRoutes);
+app.use("/", imageRoutes);
 
 
 app.listen(port, () => {
