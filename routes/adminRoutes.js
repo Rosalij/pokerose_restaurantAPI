@@ -95,7 +95,7 @@ router.post('/register', async (req, res) => {
 
         //hash password with bcrypt
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
+ 
 
         //create new user   
         const newAdmin = new Admin({
@@ -344,6 +344,6 @@ router.patch('/order/:_id', authenticateToken, async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
-});
+}); 
 
 module.exports = router
