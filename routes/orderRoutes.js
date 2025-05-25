@@ -5,7 +5,20 @@ const express = require('express');
 const router = express.Router();
 
 const Order = require('../models/order.js');
+const Food = require('../models/food.js');
+const Drink = require('../models/drink.js');
 
+//get both drink and food menu names for order forms
+router.get('/menu', async (req, res) => {
+  try {
+    const food = await Food.find({}, 'name');   // Only return the name field
+    const drink = await Drink.find({}, 'name');
+
+    res.json({ food, drink });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 //post new order
 router.post('/order', async (req, res) => {
